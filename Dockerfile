@@ -1,7 +1,9 @@
+# syntax=docker/dockerfile:1
+
 FROM debian:stable-slim
 
 RUN apt-get update && \
-    apt-get install -y curl sudo
+    apt-get install -y curl sudo libncurses6
 
 ARG USER_NAME=user
 ARG GROUP_NAME=user
@@ -17,6 +19,8 @@ RUN bash -c "yes y | $(curl -fsSL https://raw.githubusercontent.com/theos/theos/
 
 ENV THEOS /home/$USER_NAME/theos
 ENV PATH $PATH:$THEOS/bin
+# Debian stable no longer ships ld.gold; Theos toolchain's clang requires it
+RUN sudo ln -s /usr/bin/ld.bfd /usr/bin/ld.gold
 RUN echo 'alias theos="$THEOS/bin/nic.pl"' >> ~/.bashrc && \
     sudo apt-get clean && \
     sudo rm -rf /var/lib/apt/lists/*
