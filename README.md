@@ -6,6 +6,12 @@
 docker build -t theos-builder .
 ```
 
+32bit (armv7 / armv7s) ビルドが必要な場合は、Swift 5.6.1 toolchain / iPhoneOS15.6 SDK を使用する:
+
+```bash
+docker build -t theos-builder-armv7 --build-arg LEGACY_SWIFT=1 .
+```
+
 ## Usage
 
 
